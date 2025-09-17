@@ -2,7 +2,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@class AVViewModel;
+@class AVViewModel,MOMediaDestination;
 
 @interface MEGAAVViewController : AVPlayerViewController
 
@@ -15,6 +15,7 @@
 @property (nonatomic, strong, nullable) MEGASdk *apiForStreaming;
 @property (nonatomic, assign) BOOL isFolderLink;
 @property (nonatomic, strong, nonnull) NSMutableSet *subscriptions;
+@property (nonatomic, assign, readonly) BOOL viewDidAppearFirstTime;
 
 - (instancetype _Nonnull)initWithURL:(NSURL *_Nonnull)fileUrl;
 - (instancetype _Nonnull)initWithNode:(MEGANode * _Nonnull)node folderLink:(BOOL)folderLink apiForStreaming:(MEGASdk * _Nonnull)apiForStreaming;

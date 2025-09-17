@@ -1532,6 +1532,7 @@
 		94FAFF1B2AFA6CA50056A177 /* Node+ResultProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FAFF1A2AFA6CA50056A177 /* Node+ResultProperties.swift */; };
 		94FB1EAD2B302C030045276C /* RecentActionBucketProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FB1EAC2B302C030045276C /* RecentActionBucketProvider.swift */; };
 		94FCE01B2D15C327000C63A4 /* TransfersWidgetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FCE01A2D15C321000C63A4 /* TransfersWidgetViewModel.swift */; };
+		980B4BD02E7AF07F008809A6 /* MEGAAVViewController+HangFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 980B4BCF2E7AF07F008809A6 /* MEGAAVViewController+HangFix.swift */; };
 		990AC4ED2A4A77EC008E298F /* ChatRoomLinkViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 990AC4EC2A4A77EC008E298F /* ChatRoomLinkViewModelTests.swift */; };
 		9911BA8B2A8B20C300B88F28 /* WaitingRoomViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9911BA8A2A8B20C300B88F28 /* WaitingRoomViewRouter.swift */; };
 		9911BA8E2A8B20CD00B88F28 /* WaitingRoomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9911BA8D2A8B20CD00B88F28 /* WaitingRoomViewController.swift */; };
@@ -4339,6 +4340,7 @@
 		94FAFF1A2AFA6CA50056A177 /* Node+ResultProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Node+ResultProperties.swift"; sourceTree = "<group>"; };
 		94FB1EAC2B302C030045276C /* RecentActionBucketProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentActionBucketProvider.swift; sourceTree = "<group>"; };
 		94FCE01A2D15C321000C63A4 /* TransfersWidgetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransfersWidgetViewModel.swift; sourceTree = "<group>"; };
+		980B4BCF2E7AF07F008809A6 /* MEGAAVViewController+HangFix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MEGAAVViewController+HangFix.swift"; sourceTree = "<group>"; };
 		990AC4EC2A4A77EC008E298F /* ChatRoomLinkViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomLinkViewModelTests.swift; sourceTree = "<group>"; };
 		9911BA8A2A8B20C300B88F28 /* WaitingRoomViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomViewRouter.swift; sourceTree = "<group>"; };
 		9911BA8D2A8B20CD00B88F28 /* WaitingRoomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingRoomViewController.swift; sourceTree = "<group>"; };
@@ -11737,6 +11739,7 @@
 		B6730B0B2735F46D00A9CF5F /* Shared Controls */ = {
 			isa = PBXGroup;
 			children = (
+				980B4BCF2E7AF07F008809A6 /* MEGAAVViewController+HangFix.swift */,
 				24AD308C2AA9AB0B004D4BF4 /* AssetCreationRequestLocationManager.swift */,
 				25E2717C2A3FE96800DDB678 /* AVPlayerManager.swift */,
 				0E43E1412B2F9CF00079700A /* AVViewModel.swift */,
@@ -14686,6 +14689,7 @@
 				C4F638722BAA81AE00D0B6B7 /* CloudDriveAdsSlotDisplayable.swift in Sources */,
 				BF5C96612BA92C9B00B71CB2 /* CloudDriveAssetUploader.swift in Sources */,
 				94B09E5B2B84CC87007D6B84 /* CloudDriveBottomToolbarFactory.swift in Sources */,
+				980B4BD02E7AF07F008809A6 /* MEGAAVViewController+HangFix.swift in Sources */,
 				94B09E612B84CC87007D6B84 /* CloudDriveContextMenuConfigFactory.swift in Sources */,
 				BFB529742C4A2100003034EF /* CloudDriveContextMenuFactory.swift in Sources */,
 				C46978572CAE8D0F007AF546 /* CloudDriveDownloadTransfersListener.swift in Sources */,

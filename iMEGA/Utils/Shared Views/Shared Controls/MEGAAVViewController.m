@@ -16,7 +16,7 @@ static const NSUInteger MIN_SECOND = 10; // Save only where the users were playi
 
 @interface MEGAAVViewController () <AVPlayerViewControllerDelegate>
 
-@property (nonatomic, assign, getter=isViewDidAppearFirstTime) BOOL viewDidAppearFirstTime;
+@property (nonatomic, assign, readwrite) BOOL viewDidAppearFirstTime;
 
 @end
 
@@ -33,6 +33,12 @@ static const NSUInteger MIN_SECOND = 10; // Save only where the users were playi
         _isFolderLink   = NO;
         _subscriptions = [[NSMutableSet alloc] init];
         _hasPlayedOnceBefore = NO;
+        _viewDidAppearFirstTime = YES;
+
+        __weak typeof(self) weakSelf = self;
+        [self startVideoPlayerTasks:^{
+            weakSelf.viewDidAppearFirstTime = NO;
+        }];
     }
     
     return self;
@@ -49,6 +55,13 @@ static const NSUInteger MIN_SECOND = 10; // Save only where the users were playi
         self.fileUrl         = [self streamingPathWithNode:node];
         MEGALogInfo(@"[MEGAAVViewController] init with node %@, is folderLink: %d, fileUrl: %@, apiForStreaming: %@", self.node, folderLink, self.fileUrl, apiForStreaming);
         _hasPlayedOnceBefore = NO;
+        
+        _viewDidAppearFirstTime = YES;
+
+        __weak typeof(self) weakSelf = self;
+        [self startVideoPlayerTasks:^{
+            weakSelf.viewDidAppearFirstTime = NO;
+        }];
     }
         
     return self;
@@ -63,8 +76,6 @@ static const NSUInteger MIN_SECOND = 10; // Save only where the users were playi
     if ([AudioPlayerManager.shared isPlayerAlive]) {
         [AudioPlayerManager.shared audioInterruptionDidStart];
     }
-
-    self.viewDidAppearFirstTime = YES;
     
     self.subscriptions = [self bindToSubscriptionsWithMovieStalled:^{
         [self movieStalledCallback];
@@ -80,7 +91,7 @@ static const NSUInteger MIN_SECOND = 10; // Save only where the users were playi
     
     NSString *fingerprint = [self fileFingerprint];
 
-    if (self.isViewDidAppearFirstTime) {
+    if (self.viewDidAppearFirstTime) {
         if (fingerprint && ![fingerprint isEqualToString:@""]) {
             MOMediaDestination *mediaDestination;
             if (self.node) {
@@ -94,23 +105,27 @@ static const NSUInteger MIN_SECOND = 10; // Save only where the users were playi
                 infoVideoDestination = [infoVideoDestination stringByReplacingOccurrencesOfString:@"%2$s" withString:[self timeForMediaDestination:mediaDestination]];
                 UIAlertController *resumeOrRestartAlert = [UIAlertController alertControllerWithTitle:LocalizedString(@"video.alert.resumeVideo.title", @"Alert title shown for video with options to resume playing the video or start from the beginning") message:infoVideoDestination preferredStyle:UIAlertControllerStyleAlert];
                 [resumeOrRestartAlert addAction:[UIAlertAction actionWithTitle:LocalizedString(@"video.alert.resumeVideo.button.restart", @"Alert button title that will start playing the video from the beginning") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    [self seekToDestinationAndPlay:nil];
+                    MEGALogInfo(@"[HangBugFixLyz] viewDidAppear video.alert.resumeVideo.button.restart")
+                    [self startLoading];
+                    [self seekToDestination:nil];
                 }]];
                 [resumeOrRestartAlert addAction:[UIAlertAction actionWithTitle:LocalizedString(@"video.alert.resumeVideo.button.resume", @"Alert button title that will resume playing the video") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    [self seekToDestinationAndPlay:mediaDestination];
+                    MEGALogInfo(@"[HangBugFixLyz] viewDidAppear video.alert.resumeVideo.button.resume")
+                    [self startLoading];
+                    [self seekToDestination:mediaDestination];
                 }]];
                 [self presentViewController:resumeOrRestartAlert animated:YES completion:nil];
             } else {
-                [self seekToDestinationAndPlay:nil];
+                MEGALogInfo(@"[HangBugFixLyz] viewDidAppear mediaDestination == nil");
+                [self startLoading];
             }
         } else {
-            [self seekToDestinationAndPlay:nil];
+            MEGALogInfo(@"[HangBugFixLyz] viewDidAppear fingerprint == nil");
+            [self startLoading];
         }
     }
     
     [[AVPlayerManager shared] assignDelegateTo:self];
-    
-    self.viewDidAppearFirstTime = NO;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

@@ -55,7 +55,7 @@ extension MEGAAVViewController {
         playerDidStall()
     }
     
-    private func bindPlayerTimeControlStatus() -> NSMutableSet {
+    func bindPlayerTimeControlStatus() -> NSMutableSet {
         var subscriptions = Set<AnyCancellable>()
         
         player?.publisher(for: \.timeControlStatus)
@@ -65,7 +65,7 @@ extension MEGAAVViewController {
         return NSMutableSet(set: subscriptions)
     }
 
-    private func bindPlayerItemStatus(playerItem: AVPlayerItem) -> NSMutableSet {
+    func bindPlayerItemStatus(playerItem: AVPlayerItem) -> NSMutableSet {
         var subscriptions = Set<AnyCancellable>()
 
         playerItem.publisher(for: \.status)
@@ -83,15 +83,19 @@ extension MEGAAVViewController {
         return NSMutableSet(set: subscriptions)
     }
     
-    private func seekTo(mediaDestination: MOMediaDestination?, playerItem: AVPlayerItem) {
+    func seekTo(mediaDestination: MOMediaDestination?, playerItem: AVPlayerItem) {
         guard let mediaDestination else {
-            playerItem.seek(to: CMTime.zero, completionHandler: nil)
+            playerItem.seek(to: CMTime.zero) {[weak self] finish in
+                self?.seekToFinish(finish)
+            }
             return
         }
         
         let time = CMTimeMake(value: mediaDestination.destination as? Int64 ?? 0, timescale: mediaDestination.timescale as? Int32 ?? 0)
         if CMTIME_IS_VALID(time) {
-            playerItem.seek(to: time, completionHandler: nil)
+            playerItem.seek(to: time) {[weak self] finish in
+                self?.seekToFinish(finish)
+            }
         }
     }
     
@@ -132,7 +136,7 @@ extension MEGAAVViewController {
     @objc func didChangePlayerItemStatus(_ status: AVPlayerItem.Status) {
         switch status {
         case .unknown, .readyToPlay, .failed:
-            stopLoading()
+            self.playerItemReadyTo(status)
         default:
             break
         }
@@ -160,11 +164,12 @@ extension MEGAAVViewController {
         }
     }
     
+    @objc
     func startLoading() {
         activityIndicator.startAnimating()
     }
     
-    private func stopLoading() {
+    func stopLoading() {
         activityIndicator.stopAnimating()
     }
     
@@ -304,23 +309,5 @@ extension MEGAAVViewController {
         } catch {
             MEGALogError("Failed to save recently opened node from: \(MEGAAVViewController.self)")
         }
-    }
-    
-    @objc func seekToDestinationAndPlay(_ mediaDestination: MOMediaDestination?) {
-        guard let fileUrl else { return }
-
-        startLoading()
-        let playerItem = AVPlayerItem(url: fileUrl)
-        
-        if let node {
-            setPlayerItemMetadata(playerItem: playerItem, node: node)
-        }
-        
-        seekTo(mediaDestination: mediaDestination, playerItem: playerItem)
-        player = AVPlayer(playerItem: playerItem)
-        subscriptions.add(bindPlayerItemStatus(playerItem: playerItem))
-        
-        player?.play()
-        subscriptions.add(bindPlayerTimeControlStatus())
     }
 }

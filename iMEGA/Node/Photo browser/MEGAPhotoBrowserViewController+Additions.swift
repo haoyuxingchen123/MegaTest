@@ -135,7 +135,13 @@ extension MEGAPhotoBrowserViewController {
                 }
             )
             controller.addAction(cancelAction)
-            self.present(controller, animated: true)
+            BugFixLog("playCurrentVideo present starting")
+            present(controller, animated: true) {
+                BugFixLog(" playCurrentVideo present complete")
+                if let avController = controller as? MEGAAVViewController {
+                    avController.presentAnimationFinish(true)
+                }
+            }
         }
     }
     
